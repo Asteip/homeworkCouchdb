@@ -1,0 +1,96 @@
+REQUEST NoSQL
+
+
+1-
+
+function(doc) {
+  emit(doc.title, doc);
+}
+
+2-
+
+function(doc) {
+	var d, year;
+	d = new Date(doc.year);
+	year = d.getFullYear();
+	if(year > 2000) {
+		emit(doc.title, doc);
+	}
+
+  	
+}
+
+3-
+
+function(doc) {
+	if(doc.title == "Spider-Man") {
+		emit(doc.summary, doc);
+	}
+	
+
+  	
+}
+
+4-
+
+function(doc) {
+	if(doc.title == "Heat") {
+		emit(doc.director, doc);
+	}	
+}
+
+5-
+
+function(doc) {
+	doc.actors.forEach(function(actor) {
+		if (actor.name == "Kirsten Dunst"){
+			emit(doc.title, doc);
+		}
+	});
+}
+
+6-
+
+function(doc) {
+	if(doc.title == "Unforgiven") {
+		doc.actors.forEach(function(actor) {
+			if(actor.name == "Clint Eastwood") {
+				emit(doc.title, actor.role);
+			}
+		});
+	}
+	
+		
+}
+
+7-
+
+function(doc) {
+	var count = 0;
+	doc.actors.forEach(function(actor) {
+		count++;
+	});
+
+	if(count == 3) {
+		emit(doc, doc.title);
+	}
+		
+}
+
+8-
+
+function(doc) {
+	var count = 0;
+	doc.actors.forEach(function(actor) {
+		emit(doc.title, actor.role);
+	});
+		
+}	
+
+9-
+
+
+
+
+
+
