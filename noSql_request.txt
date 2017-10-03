@@ -84,13 +84,112 @@ function(doc) {
 	doc.actors.forEach(function(actor) {
 		emit(doc.title, actor.role);
 	});
-		
 }	
+
+ -----------------------
+
+function(doc) {
+  for(var actor in doc.actors){
+    emit(doc.title,doc.actors[actor].role) 
+  }
+}
 
 9-
 
+function(doc) {
+  emit(doc.title,doc)
+}
+
+http://localhost:5984/tp/_design/test/_view/view?key=%2210%20Years%22
 
 
+10-
 
 
+function(doc) {
+  for(var a in doc.actors){
+    emit(doc.actors[a].name, doc.title);
+  }
+}
+
+http://localhost:5984/tp/_design/test/_view/view?key=%22Fan%20Sweed%22
+
+@deprecated
+function(doc) {
+  for(var actor in doc.actors){
+    if(doc.actors[actor].name == doc.title){
+     emit(doc.title,doc.actors[actor].name); 
+    }
+  }
+}
+
+
+11-
+
+function(doc) {
+  var d, year;
+	d = new Date(doc.year);
+	year = d.getFullYear();
+	emit(year, doc.title)
+}
+
+http://localhost:5984/tp/_design/test/_view/view?key=1962
+
+
+12-
+
+function(doc) {
+  for(var actor in doc.actors){
+    if(doc.actors[actor].name == doc.director){
+     emit(doc.title,doc.actors[actor].name); 
+    }
+  }
+}
+
+---------------------
+
+NON FONCTIONNEL
+
+function(doc) {
+  emit(doc.director,"d")
+  for(var actor in doc.actors){
+    emit(doc.actors[actor].name,"a"); 
+  }
+}
+
+function (keys, values, rereduce) {
+  var director[];
+  var actors[];
+  var iD, iA = 0;
+  for(var person in keys){
+    if (values[person] == "a"){
+      actors[iA] = keys[person];
+      iA = iA + 1;
+    }
+    else{
+      director[iD] = keys[person];
+      iD = iD + 1;
+    }
+  }
+  for(var t1 in director){
+    for(var t2 in actors){
+      if(director[t1] == actors[t2]){
+        emit(director[t1],actors[t2]);
+      }
+    }
+  }
+}
+
+13-
+
+function(doc) {
+  emit(doc.director,doc.title)
+}
+
+function(keys, values, rereduce) {
+    return values;
+}
+
+
+14-
 
