@@ -25,10 +25,7 @@ function(doc) {
 function(doc) {
 	if(doc.title == "Spider-Man") {
 		emit(doc.summary, doc);
-	}
-	
-
-  	
+	}  	
 }
 
 4-
@@ -100,7 +97,7 @@ function(doc) {
   emit(doc.title,doc)
 }
 
-http://localhost:5984/tp/_design/test/_view/view?key=%2210%20Years%22
+http://localhost:5984/tpfinal/_design/designDoc/_view/q9?key=%2210%20Years%22
 
 
 10-
@@ -112,7 +109,7 @@ function(doc) {
   }
 }
 
-http://localhost:5984/tp/_design/test/_view/view?key=%22Fan%20Sweed%22
+http://localhost:5984/tpfinal/_design/designDoc/_view/q10?key=%22Fan%20Sweed%22
 
 @deprecated
 function(doc) {
@@ -133,7 +130,7 @@ function(doc) {
 	emit(year, doc.title)
 }
 
-http://localhost:5984/tp/_design/test/_view/view?key=1962
+http://localhost:5984/tpfinal/_design/designDoc/_view/q11?key=1962
 
 
 12-
@@ -186,10 +183,21 @@ function(doc) {
   emit(doc.director,doc.title)
 }
 
-function(keys, values, rereduce) {
-    return values;
+function (keys, values, rereduce) {
+  var results = "";
+  return results.concat(values);
 }
 
 
 14-
 
+function (doc) {
+  for(var i in doc.actors){
+    emit(doc.actors[i].name, doc.director);
+  }
+}
+
+function (keys, values, rereduce) {
+  var results = "";
+  return results.concat(values);
+}
